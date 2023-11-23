@@ -7,7 +7,7 @@ namespace app;
 
 class Program
 {
-    private const bool IsDebug = true;
+    internal const bool IsDebug = true;
   
     static string GetToken(string TokenType) {
         return File.ReadAllText($"{TokenType.ToUpper()}.SECRET");

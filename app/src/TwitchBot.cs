@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using app;
 
 internal class TwitchBot {
     internal struct Settings {
@@ -52,12 +53,16 @@ internal class TwitchBot {
 
     internal async Task SendMessage(string message) {
         await connected.Task;
-        await sWriter.WriteLineAsync($"PRIVMSG #{this.mySettings.channelname} :{message}");
+        var msg = $"PRIVMSG #{this.mySettings.channelname} :{message}";
+        if (Program.IsDebug) Console.WriteLine($"Attempting to send [{msg}]");
+        await sWriter.WriteLineAsync(msg);
     }
 
     internal async Task JoinChannel() {
         await connected.Task;
-        await sWriter.WriteLineAsync($"JOIN #{this.mySettings.channelname}");
+        var msg = $"JOIN #{this.mySettings.channelname}";
+        if (Program.IsDebug) Console.WriteLine($"Attempting to send [{msg}]");
+        await sWriter.WriteLineAsync(msg);
     }
 
 
@@ -80,13 +85,17 @@ internal class TwitchBot {
 
         while (true) {
             string line = await sReader.ReadLineAsync();
-            Console.WriteLine(line);
+            if (Program.IsDebug) Console.WriteLine(line);
 
             string[] split = line.Split(" ");
 
             //PING :tmi.twitch.tv
             //Respond with PONG :tmi.twitch.tv
-            if (line.StartsWith("PING")) await sWriter.WriteLineAsync($"PONG {split[1]}");
+            if (line.StartsWith("PING")) {
+                var msg = $"PONG {split[1]}";
+                if (Program.IsDebug) Console.WriteLine("Responding to PING: {msg}");
+                await sWriter.WriteLineAsync(msg);
+            }
             
             if (split.Length > 2 && split[1] == "PRIVMSG")
                 {
