@@ -10,6 +10,12 @@
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
   <ItemGroup>
+    <AuthFile Include="./*.SECRET"/>
+  </ItemGroup>
+  <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+    <Copy SourceFiles="@(AuthFile)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="false" />
+  </Target>
+  <ItemGroup>
     <PackageReference Include="AsyncAwaitBestPractices" Version="7.0.0" />
   </ItemGroup>
 
