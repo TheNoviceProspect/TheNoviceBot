@@ -3,3 +3,4 @@
 *.SECRET
 app/src/packages.lock.json
 .vs/
+old-commands.txt
