@@ -54,7 +54,7 @@ internal class TwitchBot {
 
     internal async Task RequestCapability(string capability) {
         //await connected.Task;
-        var msg = $"CAP REQ:{capability}";
+        var msg = $"CAP REQ :{capability}";
         if (Program.IsDebug) Console.WriteLine($"Attempting to send [{msg}]");
         await sWriter.WriteLineAsync(msg);
     }
