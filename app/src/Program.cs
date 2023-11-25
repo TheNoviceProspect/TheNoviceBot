@@ -15,7 +15,7 @@ class Program
 
     static async Task Main(string[] args)
     {
-        var myBot = new TwitchBot("TheNoviceBot",GetToken("twitch"));
+        var myBot = new TwitchBot(nick: "TheNoviceBot", auth: GetToken("twitch"), channel: "thenoviceprospect");
         myBot.Start().SafeFireAndForget();
         await myBot.JoinChannel();
         await myBot.SendMessage($"'{myBot.mySettings.username}' has joined {myBot.mySettings.channelname} ");
@@ -24,6 +24,10 @@ class Program
             Console.WriteLine($"{twitchChatMessage.Sender} said '{twitchChatMessage.Message}'");
             if (twitchChatMessage.Message.StartsWith("!test")) {
                 await myBot.SendMessage($"Hey there {twitchChatMessage.Sender}");
+            }
+            if (twitchChatMessage.Message.StartsWith("!stop")) {
+                await myBot.SendMessage($"'{myBot.mySettings.username}' has left {myBot.mySettings.channelname} ");
+                Environment.Exit(0);
             }
         };
         await Task.Delay(-1);

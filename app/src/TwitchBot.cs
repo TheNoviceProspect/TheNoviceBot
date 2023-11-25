@@ -43,12 +43,13 @@ internal class TwitchBot {
             public string Channel { get; set; }
         }
 
-    public TwitchBot(string nick, string auth)
+    public TwitchBot(string nick, string auth, string channel)
     {
         mySettings.ip = "irc.chat.twitch.tv";
         mySettings.port = 6667;
         mySettings.username = nick;
         mySettings.password = auth;
+        mySettings.channelname = channel;
     }
 
     internal async Task SendMessage(string message) {
