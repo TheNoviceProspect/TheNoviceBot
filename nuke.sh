@@ -7,4 +7,6 @@ echo "This script nukes all build outputs, make sure you want this!!!"
 # -p The prompt to display before expecting input.
 ###
 read -n 1 -s -r -p "Press any key to continue or CTRL+C to stop this script"
+echo $'\n'
 rm -vrf ./app/src/bin/ ./app/src/obj/
+

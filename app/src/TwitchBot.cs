@@ -52,6 +52,13 @@ internal class TwitchBot {
         mySettings.channelname = channel;
     }
 
+    internal async Task RequestCapability(string capability) {
+        await connected.Task;
+        var msg = $"CAP REQ:{capability}";
+        if (Program.IsDebug) Console.WriteLine($"Attempting to send [{msg}]");
+        await sWriter.WriteLineAsync(msg);
+    }
+    
     internal async Task SendMessage(string message) {
         await connected.Task;
         var msg = $"PRIVMSG #{this.mySettings.channelname} :{message}";
@@ -80,6 +87,7 @@ internal class TwitchBot {
         //
         //All we need now is
         ////await streamWriter.WriteLineAsync($"PASS {password}");
+        await RequestCapability("twitch.tv/commands twitch.tv/tags");
         await sWriter.WriteLineAsync($"PASS {mySettings.password}");
         await sWriter.WriteLineAsync($"NICK {mySettings.username}");
         connected.SetResult(0);
@@ -101,7 +109,7 @@ internal class TwitchBot {
             if (split.Length > 2 && split[1] == "PRIVMSG")
                 {
                     //:mytwitchchannel!mytwitchchannel@mytwitchchannel.tmi.twitch.tv 
-                    // ^^^^^^^^
+                    // ^^^^^^^^^^^^^^^
                     //Grab this name here
                     int exclamationPointPosition = split[0].IndexOf("!");
                     string username = split[0].Substring(1, exclamationPointPosition - 1);
